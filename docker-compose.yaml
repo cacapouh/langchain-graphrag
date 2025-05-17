@@ -1,0 +1,10 @@
+services:
+  neo4j:
+    build:
+      context: docker
+    environment:
+        - NEO4J_AUTH=neo4j/password
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    restart: always
