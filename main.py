@@ -1,32 +1,21 @@
 from langchain_community.document_loaders import WikipediaLoader
-from langchain_core.runnables import (RunnableBranch, RunnableLambda, RunnableParallel,RunnablePassthrough)
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.prompts.prompt import PromptTemplate
 from pydantic import BaseModel, Field
 
-from typing import Tuple, List, Optional
-from langchain_core.messages import AIMessage, HumanMessage
+from typing import List
 from langchain_core.output_parsers import StrOutputParser
-import os
 from langchain_community.graphs import Neo4jGraph
-#from langchain.document_loaders import WikipediaLoader
 
 from langchain.text_splitter import TokenTextSplitter
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.document_loaders import TextLoader
 
 from langchain_openai import ChatOpenAI
 from langchain_experimental.graph_transformers import LLMGraphTransformer
-from neo4j import GraphDatabase
-from yfiles_jupyter_graphs import GraphWidget
 from langchain_community.vectorstores import Neo4jVector
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores.neo4j_vector import remove_lucene_chars, SearchType
-from langchain_core.runnables import ConfigurableField, RunnableParallel, RunnablePassthrough
+from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 
 
-import getpass
-import os
 from dotenv import load_dotenv
 load_dotenv()
 
