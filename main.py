@@ -28,8 +28,6 @@ llm=ChatOpenAI(temperature=0, model="gpt-4o")
 llm_transformer = LLMGraphTransformer(llm=llm)
 graph_documents = llm_transformer.convert_to_graph_documents(documents)
 
-print(graph_documents)
-
 graph = Neo4jGraph()
 graph.add_graph_documents(
     graph_documents,
@@ -51,7 +49,7 @@ class Entities(BaseModel):
     """エンティティに関する情報の識別"""
     names: List[str] = Field(
         ...,
-        description="文章の中に登場する、人物、各人物の性格、各人物間の続柄、各人物が所属する組織、各人物の家族関係",
+        description="テキストに登場する重要な概念、人物、場所、組織、出来事、関係性、事実など、あらゆる種類の重要なエンティティや情報"
     )
 
 # 指示文を含んだプロンプトテンプレート
@@ -59,13 +57,13 @@ prompt = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            "テキストから家族と人物のエンティティを抽出します。",
+            "テキストからあらゆる種類の重要な情報とエンティティを抽出します。これには人物、場所、組織、概念、関係性、事実などが含まれます。",
         ),
         (
             "human",
-            "指定された形式を使用して、以下から情報を抽出します。"
+            "指定された形式を使用して、以下から重要な情報をすべて抽出します。"
             "input: {question}",
-        ),
+        )
     ]
 )
 
@@ -116,8 +114,6 @@ def structured_retriever(question: str) -> str:
         result += "\n".join([el['output'] for el in response])
     return result
 
-# テスト: グラフ検索の実行
-print(structured_retriever("カツオの両親は誰ですか？"))
 
 # 最終的なretriever関数（グラフ検索とベクトル検索の組み合わせ）
 def retriever(input_obj):
