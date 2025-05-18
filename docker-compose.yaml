@@ -1,10 +1,26 @@
 services:
   neo4j:
     build:
-      context: docker
+      context: neo4j
     environment:
-        - NEO4J_AUTH=neo4j/password
+      - NEO4J_AUTH=neo4j/password
     ports:
       - "7474:7474"
       - "7687:7687"
     restart: always
+    healthcheck:
+      test: wget http://localhost:7474 || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  app:
+    build:
+      context: .
+    volumes:
+      - .:/work
+    entrypoint: /bin/bash -c 'python src/embedding_batch.py && python src/run_search.py'
+    env_file:
+      - .env
+    depends_on:
+      neo4j:
+        condition: service_healthy
