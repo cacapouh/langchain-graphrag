@@ -1,2 +1,4 @@
 .idea
 .env
+
+embedding_config.json
